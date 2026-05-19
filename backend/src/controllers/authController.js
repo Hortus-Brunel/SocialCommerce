@@ -11,7 +11,7 @@ exports.register = async (req, res) => {
         const role = req.body.role ? req.body.role.trim().toLowerCase() : "customer";
 
         // Validate strong password
-        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+        const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({ message: "Password must be at least 8 characters long and contain at least one number and one special character (!@#$%^&*)." });
         }
