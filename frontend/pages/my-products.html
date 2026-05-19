@@ -96,7 +96,7 @@
 
     async function loadMyProducts() {
       try {
-        const res = await fetch(`http://localhost:5000/api/products`, { headers: getAuthHeader() });
+        const res = await fetch(`https://socialverse-backend.onrender.com/api/products`, { headers: getAuthHeader() });
         const allProducts = await res.json();
         // Filter products owned by this business
         const myProducts = allProducts.filter(p => p.business_id === user.id);
@@ -137,7 +137,7 @@
     async function deleteProduct(id) {
       if (!confirm('Are you sure you want to permanently delete this product?')) return;
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+        const res = await fetch(`https://socialverse-backend.onrender.com/api/products/${id}`, {
           method: 'DELETE',
           headers: getAuthHeader()
         });
