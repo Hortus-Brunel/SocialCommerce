@@ -4,7 +4,7 @@
 // Handles all payment operations on the frontend
 // Integrates with Stripe and local payment gateways
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://socialverse-backend.onrender.com/api';
 
 class PaymentHandler {
   constructor() {

@@ -3,7 +3,7 @@
 // =========================
 // Handles all API calls and application state
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://socialverse-backend.onrender.com/api';
 
 class APIClient {
   constructor() {

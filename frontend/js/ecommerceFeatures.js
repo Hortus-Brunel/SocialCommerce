@@ -4,7 +4,7 @@
 // Wishlist, Reviews, Ratings, Recommendations
 // Social Commerce Features from TikTok, Amazon, Alibaba
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'https://socialverse-backend.onrender.com/api';
 
 // =========================
 // WISHLIST FUNCTIONS
