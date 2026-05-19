@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Gallery - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-top: 24px; }
+    .gallery-item { position: relative; aspect-ratio: 1; border-radius: 16px; overflow: hidden; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .item-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent); opacity: 0; transition: opacity 0.3s; display: flex; align-items: flex-end; padding: 12px; }
+    .gallery-item:hover .item-overlay { opacity: 1; }
+    .item-type { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.5); padding: 4px 8px; border-radius: 6px; font-size: 10px; color: white; backdrop-filter: blur(4px); }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+    const _u = JSON.parse(localStorage.getItem("user") || '{}');
+    if (!_u || _u.role !== "business") window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Business</span>
+      <a href="business-dashboard.html" class="sb-link">📊 Dashboard</a>
+      <a href="business-identity.html" class="sb-link">✓ Verification</a>
+      <a href="add-product.html" class="sb-link">➕ Add Product</a>
+      <a href="my-products.html" class="sb-link">📦 My Products</a>
+      <a href="media-gallery.html" class="sb-link active">🖼️ Media Gallery</a>
+      <a href="business-profile.html" class="sb-link">🏪 Store Profile</a>
+      <a href="product-listing.html" class="sb-link" style="margin-top:auto;">🛍️ Marketplace</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;">
+        <div>
+          <h1 style="margin: 0;">Media Gallery 🖼️</h1>
+          <p style="color: var(--muted); margin-top: 4px;">Manage your product photos and videos.</p>
+        </div>
+        <button class="btn btn-primary" onclick="displayNotification('Upload coming soon!', 'info')">➕ Upload Media</button>
+      </div>
+
+      <div class="card" style="padding: 16px;">
+        <div style="display:flex;gap:10px;margin-bottom:20px;">
+          <button class="btn btn-secondary btn-xs" style="background:var(--primary);border-color:var(--primary)">All Media</button>
+          <button class="btn btn-secondary btn-xs">Images</button>
+          <button class="btn btn-secondary btn-xs">Videos</button>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item">
+            <span class="item-type">IMG</span>
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=300&h=300&fit=crop">
+            <div class="item-overlay">
+              <span style="font-size:12px;color:white;font-weight:500;">iphone_15_pro.jpg</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <span class="item-type">IMG</span>
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop">
+            <div class="item-overlay">
+              <span style="font-size:12px;color:white;font-weight:500;">headphones_premium.jpg</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <span class="item-type">IMG</span>
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop">
+            <div class="item-overlay">
+              <span style="font-size:12px;color:white;font-weight:500;">watch_pro.jpg</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <span class="item-type">IMG</span>
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=300&fit=crop">
+            <div class="item-overlay">
+              <span style="font-size:12px;color:white;font-weight:500;">red_sneakers.jpg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>

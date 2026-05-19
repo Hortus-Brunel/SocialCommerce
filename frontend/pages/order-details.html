@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Details - SocialVerse</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- SIDEBAR -->
+  <div class="dashboard">
+    <aside class="sidebar card">
+      <h2>Order Details</h2>
+      <ul>
+        <li><a href="customer-dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="product-listing.html">📦 Products</a></li>
+        <li><a href="orders.html">📋 Orders</a></li>
+        <li><a href="social-feed.html">📱 Feed</a></li>
+        <li><a href="media-gallery.html">🖼️ Gallery</a></li>
+        <li><a href="ai-assistant.html">🤖 AI</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <button class="btn btn-secondary" onclick="history.back()">← Back to Orders</button>
+
+      <div class="order-detail">
+        <div class="detail-header">
+          <div>
+            <h1>Order #ORD-001234</h1>
+            <p class="muted">Placed on May 10, 2024</p>
+          </div>
+          <span class="status-badge status-delivered">✓ Delivered on May 13, 2024</span>
+        </div>
+
+        <div class="detail-grid">
+          <div class="card">
+            <h3>Order Items</h3>
+            <div class="detail-items">
+              <div class="detail-item">
+                <img src="../images/product-1.jpg" alt="iPhone">
+                <div class="item-info">
+                  <strong>iPhone 15 Pro</strong>
+                  <p class="muted">Deep Purple • 256GB</p>
+                  <p>Qty: 1</p>
+                </div>
+                <p class="item-price">$999.00</p>
+              </div>
+            </div>
+            <div class="item-divider"></div>
+            <div class="price-breakdown">
+              <div class="price-row">
+                <span>Subtotal</span>
+                <span>$999.00</span>
+              </div>
+              <div class="price-row">
+                <span>Shipping</span>
+                <span class="success">FREE</span>
+              </div>
+              <div class="price-row">
+                <span>Tax</span>
+                <span>$79.92</span>
+              </div>
+              <div class="price-row total">
+                <strong>Total</strong>
+                <strong>$1,078.92</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Shipping Address</h3>
+            <p>John Doe</p>
+            <p>123 Main Street</p>
+            <p>San Francisco, CA 94102</p>
+            <p>United States</p>
+            <p class="muted">Phone: +1 (555) 123-4567</p>
+          </div>
+
+          <div class="card">
+            <h3>Billing Address</h3>
+            <p>John Doe</p>
+            <p>123 Main Street</p>
+            <p>San Francisco, CA 94102</p>
+            <p>United States</p>
+          </div>
+
+          <div class="card">
+            <h3>Payment Method</h3>
+            <p>💳 Visa ending in 4242</p>
+            <p class="muted">Paid on May 10, 2024</p>
+            <p class="success">Payment Confirmed</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Tracking Information</h3>
+          <div class="tracking-timeline">
+            <div class="timeline-item completed">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <strong>Order Confirmed</strong>
+                <p class="muted">May 10, 2024 at 2:30 PM</p>
+              </div>
+            </div>
+
+            <div class="timeline-item completed">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <strong>Processing</strong>
+                <p class="muted">May 10, 2024 at 3:15 PM</p>
+              </div>
+            </div>
+
+            <div class="timeline-item completed">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <strong>Shipped</strong>
+                <p class="muted">May 11, 2024 at 9:00 AM</p>
+                <p class="muted">Tracking: UPS 1Z999AA10123456784</p>
+              </div>
+            </div>
+
+            <div class="timeline-item completed">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <strong>Delivered</strong>
+                <p class="muted">May 13, 2024 at 4:45 PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Actions</h3>
+          <div class="action-buttons">
+            <button class="btn btn-secondary">📧 Download Invoice</button>
+            <button class="btn btn-secondary">🔄 Return Item</button>
+            <button class="btn btn-secondary">💬 Contact Support</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Load order details from API
+    console.log('Loading order details...');
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .order-filters { display: flex; gap: 10px; margin-bottom: 24px; overflow-x: auto; padding-bottom: 8px; }
+    .filter-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 8px 16px; border-radius: 20px; cursor: pointer; transition: all 0.2s; white-space: nowrap; font-size: 13px; font-weight: 500; }
+    .filter-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+    .filter-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+    
+    .orders-list { display: flex; flex-direction: column; gap: 20px; }
+    .order-card { padding: 24px; display: flex; flex-direction: column; gap: 16px; border-radius: 16px; }
+    .order-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 16px; }
+    .order-header h3 { margin: 0 0 4px 0; font-size: 18px; color: white; }
+    
+    .status-badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .status-delivered { background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); }
+    .status-shipped { background: rgba(251,176,59,0.15); color: #fbb03b; border: 1px solid rgba(251,176,59,0.3); }
+    .status-pending { background: rgba(163,174,208,0.15); color: var(--muted); border: 1px solid rgba(163,174,208,0.3); }
+    
+    .order-items { display: flex; flex-direction: column; gap: 12px; }
+    .order-item { display: flex; align-items: center; gap: 16px; background: rgba(255,255,255,0.02); padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+    .order-item img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; }
+    .order-item-info { flex: 1; }
+    .order-item-info strong { display: block; font-size: 15px; color: white; margin-bottom: 4px; }
+    .order-item-price { font-weight: 700; color: var(--primary); font-size: 16px; }
+    
+    .order-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; margin-top: 8px; }
+    .order-total span { color: var(--muted); margin-right: 8px; font-size: 14px; }
+    .order-total strong { font-size: 20px; color: white; }
+    
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; }
+    .sb-link:hover { background:rgba(102,126,234,.15);color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <a class="sb-link" id="dashLink" href="customer-dashboard.html">🏠 Dashboard</a>
+      <a class="sb-link" href="product-listing.html">🛍️ Marketplace</a>
+      <a class="sb-link active" href="orders.html">📋 My Orders</a>
+      <a class="sb-link" href="chat.html">💬 Messages</a>
+      <a class="sb-link" href="ai-assistant.html">🤖 AI Assistant</a>
+    </aside>
+
+    <main class="main">
+      <h1 style="margin:0 0 8px 0;">My Orders 📋</h1>
+      <p style="color:var(--muted); margin-bottom: 24px;">Track and manage your recent purchases.</p>
+
+      <div class="order-filters">
+        <button class="filter-btn active" onclick="filterOrders('all')">All Orders</button>
+        <button class="filter-btn" onclick="filterOrders('pending')">Pending</button>
+        <button class="filter-btn" onclick="filterOrders('shipped')">Shipped</button>
+        <button class="filter-btn" onclick="filterOrders('delivered')">Delivered</button>
+      </div>
+
+      <div class="orders-list">
+        
+        <!-- Order 1 -->
+        <div class="card order-card">
+          <div class="order-header">
+            <div>
+              <h3>Order #ORD-10492</h3>
+              <p class="muted" style="margin:0; font-size:13px;">Placed on May 15, 2026</p>
+            </div>
+            <span class="status-badge status-delivered">✓ Delivered</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <img src="https://images.unsplash.com/photo-1620589125156-fd5028c5e05b?w=200&h=200&fit=crop" alt="Traditional Attire">
+              <div class="order-item-info">
+                <strong>Traditional Attire</strong>
+                <p class="muted" style="margin:0; font-size:12px;">Qty: 1</p>
+              </div>
+              <p class="order-item-price">Fr 45,000</p>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total">
+              <span>Total:</span>
+              <strong>Fr 45,000</strong>
+            </div>
+            <button class="btn btn-secondary">View Invoice</button>
+          </div>
+        </div>
+
+        <!-- Order 2 -->
+        <div class="card order-card">
+          <div class="order-header">
+            <div>
+              <h3>Order #ORD-10550</h3>
+              <p class="muted" style="margin:0; font-size:13px;">Placed on May 18, 2026</p>
+            </div>
+            <span class="status-badge status-shipped">📦 Shipped</span>
+          </div>
+          <div class="order-items">
+            <div class="order-item">
+              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&h=200&fit=crop" alt="iPhone 15 Pro">
+              <div class="order-item-info">
+                <strong>iPhone 15 Pro</strong>
+                <p class="muted" style="margin:0; font-size:12px;">Qty: 1</p>
+              </div>
+              <p class="order-item-price">Fr 550,000</p>
+            </div>
+            <div class="order-item">
+              <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop" alt="Premium Headphones">
+              <div class="order-item-info">
+                <strong>Premium Headphones</strong>
+                <p class="muted" style="margin:0; font-size:12px;">Qty: 1</p>
+              </div>
+              <p class="order-item-price">Fr 120,000</p>
+            </div>
+          </div>
+          <div class="order-footer">
+            <div class="order-total">
+              <span>Total:</span>
+              <strong>Fr 670,000</strong>
+            </div>
+            <button class="btn btn-secondary">Track Package</button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.role === 'business') {
+      document.getElementById('dashLink').href = 'business-dashboard.html';
+    }
+
+    function filterOrders(status) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      // Simulated filter
+    }
+  </script>
+</body>
+</html>

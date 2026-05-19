@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Checkout - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .checkout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 24px; }
+    @media(max-width:900px) { .checkout-grid { grid-template-columns: 1fr; } }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-section { margin-bottom: 20px; }
+    .form-section h3 { margin: 0 0 14px; font-size: 16px; }
+    .form-section .auth-input { width: 100%; box-sizing: border-box; margin-bottom: 10px; }
+    .payment-method-btn { width: 100%; padding: 16px; border: 2px solid rgba(255,255,255,.1); border-radius: 14px; background: rgba(255,255,255,.04); cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all .25s; margin-bottom: 10px; font-family: inherit; color: white; }
+    .payment-method-btn:hover { border-color: var(--primary); background: rgba(102,126,234,.1); }
+    .payment-method-btn.selected { border-color: var(--primary); background: rgba(102,126,234,.15); }
+    .payment-method-btn .pm-icon { font-size: 26px; }
+    .payment-method-btn .pm-info { text-align: left; flex: 1; }
+    .payment-method-btn .pm-info strong { display: block; font-size: 14px; }
+    .payment-method-btn .pm-info span { font-size: 12px; color: var(--muted); }
+    .payment-method-btn .pm-check { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 10px; }
+    .payment-method-btn.selected .pm-check { background: var(--primary); border-color: var(--primary); }
+    .phone-section { display: none; margin-top: 12px; }
+    .phone-section.active { display: block; }
+    .summary-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+    .summary-item img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+    .summary-row { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; }
+    .summary-row.total { font-size: 16px; font-weight: 700; padding-top: 12px; }
+    .summary-divider { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: 4px 0; }
+    .promo-row { display: flex; gap: 10px; margin: 14px 0; }
+    .promo-row input { flex: 1; }
+    .security-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,.08); }
+    .sec-badge { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; }
+    .sb-link:hover { background:rgba(102,126,234,.15);color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <a class="sb-link" href="customer-dashboard.html">🏠 Dashboard</a>
+      <a class="sb-link" href="product-listing.html">📦 Products</a>
+      <a class="sb-link" href="orders.html">📋 My Orders</a>
+      <a class="sb-link" href="social-feed.html">📱 Social Feed</a>
+      <a class="sb-link" href="ai-assistant.html">🤖 AI Assistant</a>
+    </aside>
+
+    <main class="main">
+      <h1 style="margin:0 0 24px;">🛒 Checkout</h1>
+
+      <div class="checkout-grid">
+        <!-- LEFT: Forms -->
+        <div>
+          <!-- Shipping -->
+          <div class="card" style="margin-bottom:20px;">
+            <h3 style="margin:0 0 16px;">📍 Delivery Address</h3>
+            <div class="form-row">
+              <input type="text" id="shipName" class="auth-input" placeholder="Full Name" required>
+              <input type="tel" id="shipPhone" class="auth-input" placeholder="+237 6xx xxx xxx" required>
+            </div>
+            <input type="text" id="shipAddress" class="auth-input" placeholder="Street Address / Quarter" required>
+            <div class="form-row">
+              <input type="text" id="shipCity" class="auth-input" placeholder="City (e.g. Douala, Yaoundé)" required>
+              <select id="shipRegion" class="auth-input" required style="width:100%;box-sizing:border-box;">
+                <option value="">Select Region</option>
+                <option>Centre</option>
+                <option>Littoral</option>
+                <option>Ouest</option>
+                <option>Nord-Ouest</option>
+                <option>Sud-Ouest</option>
+                <option>Sud</option>
+                <option>Est</option>
+                <option>Adamaoua</option>
+                <option>Nord</option>
+                <option>Extrême-Nord</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="card">
+            <h3 style="margin:0 0 16px;">💳 Payment Method</h3>
+            <p style="color:var(--muted);font-size:13px;margin:0 0 16px;">All prices are in FCFA (Francs CFA). Choose your mobile money provider:</p>
+
+            <button class="payment-method-btn selected" id="btn-mtn" onclick="selectPayment('mtn')">
+              <span class="pm-icon">📱</span>
+              <div class="pm-info"><strong>MTN Mobile Money</strong><span>Pay via MTN MoMo — Instant confirmation</span></div>
+              <div class="pm-check">✓</div>
+            </button>
+
+            <button class="payment-method-btn" id="btn-orange" onclick="selectPayment('orange')">
+              <span class="pm-icon">🟠</span>
+              <div class="pm-info"><strong>Orange Money</strong><span>Pay via Orange Money — Instant confirmation</span></div>
+              <div class="pm-check"></div>
+            </button>
+
+            <div class="phone-section active" id="mtn-section">
+              <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">📱 MTN Phone Number</label>
+              <input type="tel" id="mtnPhone" class="auth-input" placeholder="+237 67x xxx xxx" style="width:100%;box-sizing:border-box;">
+              <p style="font-size:11px;color:var(--muted);margin:6px 0 0;">Enter the MTN number linked to your MoMo account</p>
+            </div>
+
+            <div class="phone-section" id="orange-section">
+              <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px;">🟠 Orange Phone Number</label>
+              <input type="tel" id="orangePhone" class="auth-input" placeholder="+237 69x xxx xxx" style="width:100%;box-sizing:border-box;">
+              <p style="font-size:11px;color:var(--muted);margin:6px 0 0;">Enter the Orange number linked to your Orange Money account</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Summary -->
+        <div>
+          <div class="card" style="position:sticky;top:20px;">
+            <h3 style="margin:0 0 16px;">📋 Order Summary</h3>
+
+            <div class="summary-items" id="summaryItems">
+              <!-- Loaded by JS -->
+              <div class="summary-item">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=100&h=100&fit=crop" alt="Product">
+                <div style="flex:1;"><strong style="font-size:13px;">iPhone 15 Pro</strong><p style="color:var(--muted);font-size:11px;margin:2px 0;">Qty: 1</p></div>
+                <span style="font-size:13px;font-weight:600;">Fr 550,000</span>
+              </div>
+            </div>
+
+            <hr class="summary-divider" style="margin:12px 0;">
+            <div class="summary-row"><span>Subtotal</span><span id="subtotalVal">Fr 550,000</span></div>
+            <div class="summary-row"><span>Delivery Fee</span><span id="deliveryVal" style="color:#22c55e;">FREE</span></div>
+            <hr class="summary-divider">
+            <div class="summary-row total"><strong>Total (FCFA)</strong><strong id="totalVal" style="color:var(--primary);">Fr 550,000</strong></div>
+
+            <div class="promo-row">
+              <input type="text" id="promoCode" class="auth-input" placeholder="Promo code" style="margin:0;">
+              <button class="btn btn-secondary" style="white-space:nowrap;" onclick="applyPromo()">Apply</button>
+            </div>
+
+            <button class="btn btn-primary full" style="margin-top:8px;" onclick="completeCheckout()">
+              🔐 Confirm Payment
+            </button>
+            <button class="btn btn-secondary full" style="margin-top:10px;" onclick="window.location.href='product-listing.html'">
+              ← Continue Shopping
+            </button>
+
+            <div class="security-badges">
+              <div class="sec-badge">🔒 Encrypted</div>
+              <div class="sec-badge">✓ MTN/Orange Verified</div>
+              <div class="sec-badge">🇨🇲 Cameroon Payments</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script src="../js/paymentHandler.js"></script>
+  <script>
+    let selectedPaymentMethod = 'mtn';
+
+    function selectPayment(method) {
+      selectedPaymentMethod = method;
+      document.querySelectorAll('.payment-method-btn').forEach(b => { b.classList.remove('selected'); b.querySelector('.pm-check').textContent = ''; });
+      document.querySelectorAll('.phone-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('btn-' + method).classList.add('selected');
+      document.getElementById('btn-' + method).querySelector('.pm-check').textContent = '✓';
+      document.getElementById(method + '-section').classList.add('active');
+    }
+
+    function applyPromo() {
+      const code = document.getElementById('promoCode').value.trim();
+      if (!code) { displayNotification('Enter a promo code first', 'error'); return; }
+      displayNotification('Promo code "' + code + '" applied! 🎉', 'success');
+    }
+
+    function completeCheckout() {
+      const name = document.getElementById('shipName').value.trim();
+      const address = document.getElementById('shipAddress').value.trim();
+      const city = document.getElementById('shipCity').value.trim();
+      const phone = selectedPaymentMethod === 'mtn' ? document.getElementById('mtnPhone').value.trim() : document.getElementById('orangePhone').value.trim();
+
+      if (!name || !address || !city) { displayNotification('Please fill in your delivery address', 'error'); return; }
+      if (!phone) { displayNotification('Please enter your ' + (selectedPaymentMethod === 'mtn' ? 'MTN' : 'Orange') + ' phone number', 'error'); return; }
+
+      const phoneRegex = /^(\+237|237)?[26]\d{8}$/;
+      if (!phoneRegex.test(phone.replace(/\s+/g, ''))) {
+        displayNotification('Invalid Cameroon phone number format', 'error'); return;
+      }
+
+      displayNotification('Processing your payment via ' + (selectedPaymentMethod === 'mtn' ? 'MTN MoMo' : 'Orange Money') + '...', 'info');
+      setTimeout(() => {
+        localStorage.removeItem('cart');
+        window.location.href = 'orders.html';
+      }, 2000);
+    }
+
+    // Load cart items
+    window.addEventListener('load', function() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length > 0) {
+        const container = document.getElementById('summaryItems');
+        let subtotal = 0;
+        let html = '';
+        cart.forEach(item => {
+          const total = (item.price || 0) * (item.quantity || 1);
+          subtotal += total;
+          html += '<div class="summary-item"><div style="flex:1"><strong style="font-size:13px;">' + (item.name || 'Product') + '</strong><p style="color:var(--muted);font-size:11px;margin:2px 0;">Qty: ' + (item.quantity || 1) + '</p></div><span style="font-size:13px;font-weight:600;">Fr ' + subtotal.toLocaleString('fr-CM') + '</span></div>';
+        });
+        container.innerHTML = html;
+        document.getElementById('subtotalVal').textContent = 'Fr ' + subtotal.toLocaleString('fr-CM');
+        document.getElementById('totalVal').textContent = 'Fr ' + subtotal.toLocaleString('fr-CM');
+      }
+    });
+  </script>
+</body>
+</html>

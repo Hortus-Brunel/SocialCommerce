@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Assistant - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .chat-container { display: flex; height: calc(100vh - 120px); background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; overflow: hidden; margin-top: 20px;}
+    .chat-sidebar { width: 280px; border-right: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; background: rgba(0,0,0,0.1); }
+    .chat-main { flex: 1; display: flex; flex-direction: column; }
+    .chat-header { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; background: rgba(0,0,0,0.2); display: flex; align-items: center; gap: 12px; }
+    .messages-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .message { max-width: 80%; display: flex; flex-direction: column; }
+    .message.received { align-self: flex-start; }
+    .message.sent { align-self: flex-end; align-items: flex-end; }
+    .message-content { padding: 14px 18px; border-radius: 16px; line-height: 1.5; font-size: 14px; }
+    .received .message-content { background: rgba(255,255,255,0.05); border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.05); }
+    .sent .message-content { background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+    .message-time { font-size: 10px; opacity: 0.6; margin-top: 6px; }
+    
+    .chat-input-area { padding: 20px; border-top: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); }
+    .quick-actions { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 4px; }
+    .quick-action { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 6px 12px; border-radius: 14px; font-size: 12px; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .quick-action:hover { background: var(--primary); color: white; border-color: var(--primary); }
+    
+    .input-wrapper { display: flex; gap: 10px; }
+    .chat-input { flex: 1; border: none; background: rgba(255,255,255,0.05); color: white; padding: 14px; border-radius: 12px; font-family: inherit; }
+    .chat-input:focus { outline: none; background: rgba(255,255,255,0.08); }
+    
+    .ai-feature { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .ai-feature h4 { margin: 0 0 4px 0; font-size: 13px; color: white; }
+    .ai-feature p { margin: 0; font-size: 11px; color: var(--muted); }
+    
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; }
+    .sb-link:hover { background:rgba(102,126,234,.15);color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <a class="sb-link" id="dashLink" href="customer-dashboard.html">🏠 Dashboard</a>
+      <a class="sb-link" href="product-listing.html">🛍️ Marketplace</a>
+      <a class="sb-link" href="orders.html">📋 My Orders</a>
+      <a class="sb-link" href="chat.html">💬 Messages</a>
+      <a class="sb-link active" href="ai-assistant.html">🤖 AI Assistant</a>
+    </aside>
+
+    <main class="main">
+      <h1 style="margin:0 0 8px 0;">AI Assistant 🤖</h1>
+      <p style="color:var(--muted); margin-bottom: 0;">Your personal shopping and business intelligence guide.</p>
+
+      <div class="chat-container">
+        <div class="chat-sidebar">
+          <div style="padding:20px; font-weight:600; border-bottom:1px solid rgba(255,255,255,0.08);">AI Capabilities</div>
+          <div class="ai-feature">
+            <h4>🛍️ Product Matches</h4>
+            <p>Find the exact Cameroonian products you need.</p>
+          </div>
+          <div class="ai-feature">
+            <h4>📊 Price Analysis</h4>
+            <p>Compare prices across different markets.</p>
+          </div>
+          <div class="ai-feature">
+            <h4>📈 Business Tips</h4>
+            <p>Learn how to optimize your store for more sales.</p>
+          </div>
+        </div>
+        
+        <div class="chat-main">
+          <div class="chat-header">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg, var(--primary), var(--secondary));display:flex;align-items:center;justify-content:center;font-size:18px;">🤖</div>
+            <div>
+              <div style="font-size:14px;">SocialVerse AI</div>
+              <div style="font-size:11px;color:var(--accent);">● Online</div>
+            </div>
+          </div>
+          
+          <div class="messages-area" id="messagesArea">
+            <div class="message received">
+              <div class="message-content">
+                👋 Hello! I'm your SocialVerse AI Assistant. How can I help you today?
+              </div>
+              <div class="message-time">Just now</div>
+            </div>
+          </div>
+          
+          <div class="chat-input-area">
+            <div class="quick-actions">
+              <button class="quick-action" onclick="fillInput('Find me traditional outfits')">Find traditional outfits</button>
+              <button class="quick-action" onclick="fillInput('How do I add a product?')">How do I add a product?</button>
+              <button class="quick-action" onclick="fillInput('What are the best selling electronics?')">Trending electronics</button>
+            </div>
+            <div class="input-wrapper">
+              <input type="text" id="messageInput" class="chat-input" placeholder="Ask me anything..." onkeypress="if(event.key === 'Enter') sendMessage()">
+              <button class="btn btn-primary" onclick="sendMessage()">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.role === 'business') {
+      document.getElementById('dashLink').href = 'business-dashboard.html';
+    }
+
+    function fillInput(text) {
+      document.getElementById('messageInput').value = text;
+      sendMessage();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const area = document.getElementById('messagesArea');
+      
+      // User Message
+      area.innerHTML += `
+        <div class="message sent">
+          <div class="message-content">${text}</div>
+          <div class="message-time">Just now</div>
+        </div>
+      `;
+      input.value = '';
+      area.scrollTop = area.scrollHeight;
+
+      // AI Loading
+      const id = 'loading-' + Date.now();
+      area.innerHTML += `
+        <div class="message received" id="${id}">
+          <div class="message-content" style="opacity:0.7">Thinking...</div>
+        </div>
+      `;
+      area.scrollTop = area.scrollHeight;
+
+      // AI Response Mock
+      setTimeout(() => {
+        document.getElementById(id).outerHTML = `
+          <div class="message received">
+            <div class="message-content">
+              This is a simulated AI response tailored to your request: "${text}". Connect the backend to a real LLM for live insights!
+            </div>
+            <div class="message-time">Just now</div>
+          </div>
+        `;
+        area.scrollTop = area.scrollHeight;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

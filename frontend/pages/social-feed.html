@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social Feed - SocialVerse</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- SIDEBAR -->
+  <div class="dashboard">
+    <aside class="sidebar card">
+      <h2>Social Feed</h2>
+      <ul>
+        <li><a href="customer-dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="product-listing.html">📦 Products</a></li>
+        <li><a href="orders.html">📋 Orders</a></li>
+        <li><a href="social-feed.html" class="active">📱 Feed</a></li>
+        <li><a href="media-gallery.html">🖼️ Gallery</a></li>
+        <li><a href="ai-assistant.html">🤖 AI</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <h1>Social Feed</h1>
+
+      <div class="feed-container">
+        <div class="create-post card">
+          <div class="post-header">
+            <img src="../images/avatar.jpg" alt="Your avatar" class="avatar">
+            <input type="text" placeholder="What's on your mind?" class="post-input" onclick="openPostEditor()">
+          </div>
+          <div class="post-actions">
+            <button class="post-action">📸 Photo</button>
+            <button class="post-action">🎥 Video</button>
+            <button class="post-action">😊 Emoji</button>
+          </div>
+        </div>
+
+        <div class="feed-posts">
+          <div class="card post">
+            <div class="post-header">
+              <div class="user-info">
+                <img src="../images/avatar.jpg" alt="User" class="avatar-small">
+                <div>
+                  <strong>Sarah Johnson</strong>
+                  <p class="muted">@sarah_j • 2 hours ago</p>
+                </div>
+              </div>
+              <button class="btn-icon">⋯</button>
+            </div>
+
+            <p class="post-content">Just launched my new product line! Check it out in the marketplace. 🎉</p>
+
+            <img src="../images/post-1.jpg" alt="Post image" class="post-image">
+
+            <div class="post-stats">
+              <span>❤️ 245 Likes</span>
+              <span>💬 42 Comments</span>
+              <span>↗️ 18 Shares</span>
+            </div>
+
+            <div class="post-actions">
+              <button class="action-btn" onclick="likePost(this)">🤍 Like</button>
+              <button class="action-btn">💬 Comment</button>
+              <button class="action-btn">↗️ Share</button>
+            </div>
+
+            <div class="comments-section">
+              <div class="comment">
+                <img src="../images/avatar2.jpg" alt="Commenter" class="avatar-tiny">
+                <div>
+                  <strong>Mike Chen</strong>
+                  <p>Looks amazing! Love the design 🔥</p>
+                  <p class="muted">1 hour ago</p>
+                </div>
+              </div>
+
+              <div class="comment">
+                <img src="../images/avatar3.jpg" alt="Commenter" class="avatar-tiny">
+                <div>
+                  <strong>Emma Wilson</strong>
+                  <p>Count me in! When's the launch?</p>
+                  <p class="muted">30 minutes ago</p>
+                </div>
+              </div>
+
+              <input type="text" placeholder="Write a comment..." class="comment-input">
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="post-header">
+              <div class="user-info">
+                <img src="../images/avatar2.jpg" alt="User" class="avatar-small">
+                <div>
+                  <strong>Tech Store Pro</strong>
+                  <p class="muted">@techstore • 4 hours ago</p>
+                </div>
+              </div>
+              <button class="btn-icon">⋯</button>
+            </div>
+
+            <p class="post-content">Summer sale is now live! Get up to 50% off on selected products. Limited time only! 🔥</p>
+
+            <img src="../images/post-2.jpg" alt="Post image" class="post-image">
+
+            <div class="post-stats">
+              <span>❤️ 512 Likes</span>
+              <span>💬 89 Comments</span>
+              <span>↗️ 156 Shares</span>
+            </div>
+
+            <div class="post-actions">
+              <button class="action-btn" onclick="likePost(this)">🤍 Like</button>
+              <button class="action-btn">💬 Comment</button>
+              <button class="action-btn">↗️ Share</button>
+            </div>
+          </div>
+
+          <div class="card post">
+            <div class="post-header">
+              <div class="user-info">
+                <img src="../images/avatar3.jpg" alt="User" class="avatar-small">
+                <div>
+                  <strong>Creative Designer</strong>
+                  <p class="muted">@designstudio • 6 hours ago</p>
+                </div>
+              </div>
+              <button class="btn-icon">⋯</button>
+            </div>
+
+            <p class="post-content">Excited to share my latest design portfolio. Featuring minimalist UI/UX designs for e-commerce platforms. ✨</p>
+
+            <img src="../images/post-3.jpg" alt="Post image" class="post-image">
+
+            <div class="post-stats">
+              <span>❤️ 178 Likes</span>
+              <span>💬 23 Comments</span>
+              <span>↗️ 45 Shares</span>
+            </div>
+
+            <div class="post-actions">
+              <button class="action-btn" onclick="likePost(this)">🤍 Like</button>
+              <button class="action-btn">💬 Comment</button>
+              <button class="action-btn">↗️ Share</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function openPostEditor() {
+      alert('Post editor modal would open here');
+    }
+
+    function likePost(button) {
+      button.classList.toggle('liked');
+      if (button.classList.contains('liked')) {
+        button.textContent = '❤️ Liked';
+      } else {
+        button.textContent = '🤍 Like';
+      }
+    }
+  </script>
+</body>
+
+</html>

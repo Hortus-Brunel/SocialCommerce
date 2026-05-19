@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Products - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .prod-table-wrap { overflow-x: auto; margin-top: 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); }
+    .prod-table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    .prod-table th { text-align: left; padding: 16px; color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .prod-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.85); font-size: 14px; }
+    .prod-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .prod-info { display: flex; align-items: center; gap: 14px; }
+    .prod-info img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+    .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+    .badge-active { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .badge-low { background: rgba(234,179,8,0.2); color: #eab308; }
+    .badge-out { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .action-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; padding: 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s; font-size: 12px; }
+    .action-btn:hover { background: var(--primary); border-color: var(--primary); }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+    const _u = JSON.parse(localStorage.getItem("user") || '{}');
+    if (!_u || _u.role !== "business") window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Business</span>
+      <a href="business-dashboard.html" class="sb-link">📊 Dashboard</a>
+      <a href="business-identity.html" class="sb-link">✓ Verification</a>
+      <a href="add-product.html" class="sb-link">➕ Add Product</a>
+      <a href="my-products.html" class="sb-link active">📦 My Products</a>
+      <a href="business-profile.html" class="sb-link">🏪 Store Profile</a>
+      <a href="product-listing.html" class="sb-link" style="margin-top:auto;">🛍️ Marketplace</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;">
+        <div>
+          <h1 style="margin: 0;">My Products 📦</h1>
+          <p style="color: var(--muted); margin-top: 4px;">Manage your inventory and product listings.</p>
+        </div>
+        <a href="add-product.html" class="btn btn-primary">➕ Add New Product</a>
+      </div>
+
+      <div class="card" style="padding: 16px;">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <input type="text" placeholder="Search products..." class="auth-input" style="flex:1;min-width:200px;background:rgba(255,255,255,0.03)" onkeyup="searchProds(this.value)">
+          <select class="auth-input" style="width:180px;background:rgba(255,255,255,0.03)" onchange="filterProds(this.value)">
+            <option value="all">All Categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="food">Food</option>
+          </select>
+        </div>
+
+        <div class="prod-table-wrap">
+          <table class="prod-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price (FCFA)</th>
+                <th>Stock</th>
+                <th>Status</th>
+                <th>Sales</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="prodBody">
+              <!-- Dynamically loaded -->
+              <tr><td colspan="6" style="text-align:center;">Loading products...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+    async function loadMyProducts() {
+      try {
+        const res = await fetch(`http://localhost:5000/api/products`, { headers: getAuthHeader() });
+        const allProducts = await res.json();
+        // Filter products owned by this business
+        const myProducts = allProducts.filter(p => p.business_id === user.id);
+        
+        const tbody = document.getElementById('prodBody');
+        if (myProducts.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No products found. Add one!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = myProducts.map(p => `
+          <tr>
+            <td>
+              <div class="prod-info">
+                <img src="${p.thumbnail_url || 'https://via.placeholder.com/100'}" alt="${p.title}">
+                <div>
+                  <strong>${p.title}</strong>
+                  <p style="font-size:11px;color:var(--muted);margin:0">${p.category || 'General'}</p>
+                </div>
+              </div>
+            </td>
+            <td><strong style="color:var(--primary)">${formatCurrency(p.price)}</strong></td>
+            <td>${p.stock || 0} units</td>
+            <td><span class="badge ${p.is_active ? 'badge-active' : 'badge-out'}">${p.is_active ? 'Active' : 'Hidden'}</span></td>
+            <td>${p.views_count || 0} views</td>
+            <td>
+              <div style="display:flex;gap:6px;">
+                <button class="action-btn" title="Delete" style="color:#ef4444" onclick="deleteProduct(${p.id})">🗑️</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm('Are you sure you want to permanently delete this product?')) return;
+      try {
+        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+          method: 'DELETE',
+          headers: getAuthHeader()
+        });
+        if (res.ok) {
+          displayNotification('Product deleted successfully', 'success');
+          loadMyProducts();
+        } else {
+          displayNotification('Failed to delete product', 'error');
+        }
+      } catch (err) {
+        displayNotification('Error connecting to server', 'error');
+      }
+    }
+
+    function searchProds(q) {
+      const rows = document.querySelectorAll('#prodBody tr');
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(q.toLowerCase()) ? 'table-row' : 'none';
+      });
+    }
+
+    function filterProds(cat) {
+      const rows = document.querySelectorAll('#prodBody tr');
+      rows.forEach(r => {
+        if(cat === 'all') { r.style.display = 'table-row'; return; }
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(cat.toLowerCase()) ? 'table-row' : 'none';
+      });
+    }
+
+    window.onload = loadMyProducts;
+  </script>
+</body>
+</html>

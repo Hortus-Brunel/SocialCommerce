@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .form-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+    @media(max-width: 900px) { .form-grid { grid-template-columns: 1fr; } }
+    .image-upload-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; margin-top: 16px; }
+    .upload-label { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 110px; border: 2px dashed rgba(255,255,255,0.1); border-radius: 14px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.03); }
+    .upload-label:hover { border-color: var(--primary); background: rgba(102,126,234,0.05); }
+    .upload-icon { font-size: 24px; margin-bottom: 4px; }
+    .upload-text { font-size: 11px; color: var(--muted); text-align: center; }
+    input[type="file"] { display: none; }
+    .preview-container { margin-top: 10px; position: relative; }
+    .preview-container img { width: 100%; height: 120px; object-fit: cover; border-radius: 10px; }
+    .remove-img { position: absolute; top: 5px; right: 5px; background: rgba(239,68,68,0.8); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 10px; cursor: pointer; }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+    const _u = JSON.parse(localStorage.getItem("user") || '{}');
+    if (!_u || _u.role !== "business") window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Business</span>
+      <a href="business-dashboard.html" class="sb-link">📊 Dashboard</a>
+      <a href="business-identity.html" class="sb-link">✓ Verification</a>
+      <a href="add-product.html" class="sb-link active">➕ Add Product</a>
+      <a href="my-products.html" class="sb-link">📦 My Products</a>
+      <a href="business-profile.html" class="sb-link">🏪 Store Profile</a>
+      <a href="product-listing.html" class="sb-link" style="margin-top:auto;">🛍️ Marketplace</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="margin-bottom: 30px;">
+        <h1 style="margin: 0;">Add New Product ➕</h1>
+        <p style="color: var(--muted); margin-top: 4px;">List your item in the SocialVerse marketplace.</p>
+      </div>
+
+      <form id="addProductForm" class="form-grid">
+        <!-- LEFT: Main Info -->
+        <div>
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px;">📝 Product Details</h3>
+            
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Product Title *</label>
+              <input type="text" id="productName" placeholder="e.g. iPhone 15 Pro Max 256GB" required class="auth-input" style="width:100%;box-sizing:border-box;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+              <div>
+                <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Category *</label>
+                <select id="productCategory" required class="auth-input" style="width:100%;box-sizing:border-box;">
+                  <option value="">Select category</option>
+                  <option value="electronics">Electronics</option>
+                  <option value="fashion">Fashion</option>
+                  <option value="food">Food & Groceries</option>
+                  <option value="home">Home & Living</option>
+                  <option value="beauty">Beauty & Care</option>
+                </select>
+              </div>
+              <div>
+                <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Brand (Optional)</label>
+                <input type="text" id="productBrand" placeholder="e.g. Apple" class="auth-input" style="width:100%;box-sizing:border-box;">
+              </div>
+            </div>
+
+            <div>
+              <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Description *</label>
+              <textarea id="productDescription" placeholder="Tell customers about your product..." required class="auth-input" rows="6" style="width:100%;box-sizing:border-box;resize:vertical;"></textarea>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px;">🖼️ Product Media</h3>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">Upload up to 4 high-quality photos of your product.</p>
+            
+            <div class="image-upload-group">
+              <div id="uploadWrap1">
+                <label for="img1" class="upload-label"><span class="upload-icon">📸</span><span class="upload-text">Main Image</span><input type="file" id="img1" accept="image/*" onchange="previewImg(this, 1)"></label>
+                <div id="preview1"></div>
+              </div>
+              <div id="uploadWrap2">
+                <label for="img2" class="upload-label"><span class="upload-icon">🖼️</span><span class="upload-text">Side View</span><input type="file" id="img2" accept="image/*" onchange="previewImg(this, 2)"></label>
+                <div id="preview2"></div>
+              </div>
+              <div id="uploadWrap3">
+                <label for="img3" class="upload-label"><span class="upload-icon">🖼️</span><span class="upload-text">Back View</span><input type="file" id="img3" accept="image/*" onchange="previewImg(this, 3)"></label>
+                <div id="preview3"></div>
+              </div>
+              <div id="uploadWrap4">
+                <label for="img4" class="upload-label"><span class="upload-icon">🖼️</span><span class="upload-text">Extra</span><input type="file" id="img4" accept="image/*" onchange="previewImg(this, 4)"></label>
+                <div id="preview4"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Pricing & Stock -->
+        <aside>
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px;">💰 Pricing & Inventory</h3>
+            
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Price (FCFA) *</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 14px; top: 12px; color: var(--muted);">Fr</span>
+                <input type="number" id="productPrice" placeholder="0" required class="auth-input" style="width:100%;box-sizing:border-box;padding-left: 35px;">
+              </div>
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Stock Quantity *</label>
+              <input type="number" id="productStock" placeholder="1" required class="auth-input" style="width:100%;box-sizing:border-box;">
+            </div>
+
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px;">Discounted Price (Optional)</label>
+              <div style="position: relative;">
+                <span style="position: absolute; left: 14px; top: 12px; color: var(--muted);">Fr</span>
+                <input type="number" id="productDiscount" placeholder="0" class="auth-input" style="width:100%;box-sizing:border-box;padding-left: 35px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 24px;">
+            <h3 style="margin: 0 0 16px;">🚚 Shipping</h3>
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+              <input type="checkbox" id="freeShipping">
+              <label for="freeShipping" style="font-size: 14px; color: white;">Free Delivery</label>
+            </div>
+            <div style="margin-bottom: 16px;">
+              <label style="display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px;">Delivery Fee (if not free)</label>
+              <input type="number" id="shippingFee" placeholder="2000" class="auth-input" style="width:100%;box-sizing:border-box;">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary large full">🚀 Publish Product</button>
+          <button type="button" class="btn btn-secondary full" style="margin-top: 10px;" onclick="window.location.href='business-dashboard.html'">Cancel</button>
+        </aside>
+      </form>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    function previewImg(input, id) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const wrap = document.getElementById('uploadWrap' + id);
+          wrap.querySelector('label').style.display = 'none';
+          document.getElementById('preview' + id).innerHTML = `
+            <div class="preview-container">
+              <img src="${e.target.result}">
+              <button class="remove-img" onclick="removeImg(${id})">✕</button>
+            </div>
+          `;
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function removeImg(id) {
+      const wrap = document.getElementById('uploadWrap' + id);
+      wrap.querySelector('label').style.display = 'flex';
+      wrap.querySelector('input').value = '';
+      document.getElementById('preview' + id).innerHTML = '';
+    }
+
+    document.getElementById('addProductForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Publishing...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        displayNotification('Product published successfully!', 'success');
+        window.location.href = 'my-products.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

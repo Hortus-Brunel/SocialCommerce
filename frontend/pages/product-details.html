@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details - SocialVerse</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- SIDEBAR -->
+  <div class="dashboard">
+    <aside class="sidebar card">
+      <h2>Product Details</h2>
+      <ul>
+        <li><a href="customer-dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="product-listing.html">📦 Products</a></li>
+        <li><a href="orders.html">📋 Orders</a></li>
+        <li><a href="social-feed.html">📱 Feed</a></li>
+        <li><a href="media-gallery.html">🖼️ Gallery</a></li>
+        <li><a href="ai-assistant.html">🤖 AI</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <button class="btn btn-secondary" onclick="history.back()">← Back</button>
+
+      <div class="product-detail">
+        <div class="product-images">
+          <div class="main-image">
+            <img src="../images/product-1.jpg" alt="iPhone 15" id="mainImage">
+          </div>
+          <div class="thumbnail-images">
+            <img src="../images/product-1.jpg" alt="Thumbnail 1" onclick="switchImage(this)">
+            <img src="../images/product-1.jpg" alt="Thumbnail 2" onclick="switchImage(this)">
+            <img src="../images/product-1.jpg" alt="Thumbnail 3" onclick="switchImage(this)">
+          </div>
+        </div>
+
+        <div class="product-info">
+          <h1>iPhone 15 Pro</h1>
+          <p class="brand">Apple</p>
+          <div class="rating">⭐ 4.8 (120 reviews) <a href="#reviews">View all</a></div>
+          
+          <div class="price-section">
+            <h2 class="price">$999</h2>
+            <p class="original-price"><s>$1,099</s></p>
+            <p class="discount">Save $100 (9% off)</p>
+          </div>
+
+          <div class="in-stock">✓ In Stock (45 available)</div>
+
+          <p class="description">
+            The iPhone 15 Pro features an advanced camera system, A17 Pro chip, and titanium design. 
+            Perfect for photography enthusiasts and professionals.
+          </p>
+
+          <div class="specs">
+            <h3>Specifications</h3>
+            <ul>
+              <li><strong>Storage:</strong> 256GB</li>
+              <li><strong>Color:</strong> Deep Purple</li>
+              <li><strong>Display:</strong> 6.1" Super Retina XDR</li>
+              <li><strong>Processor:</strong> A17 Pro</li>
+              <li><strong>Camera:</strong> 48MP Main + 12MP Telephoto</li>
+            </ul>
+          </div>
+
+          <div class="purchase-section">
+            <div class="quantity-selector">
+              <label>Quantity:</label>
+              <button onclick="decreaseQty()">-</button>
+              <input type="number" id="quantity" value="1" min="1">
+              <button onclick="increaseQty()">+</button>
+            </div>
+
+            <button class="btn btn-primary large" onclick="addToCart()">Add to Cart</button>
+            <button class="btn btn-secondary large" onclick="addToWishlist()">❤️ Wishlist</button>
+          </div>
+
+          <div class="seller-info card">
+            <h4>Seller Information</h4>
+            <p><strong>Store Name:</strong> Apple Official Store</p>
+            <p><strong>Rating:</strong> ⭐ 4.9 (500+ sales)</p>
+            <p><strong>Shipping:</strong> Free worldwide shipping</p>
+            <button class="btn btn-secondary" onclick="contactSeller()">Contact Seller</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="reviews-section">
+        <h3 id="reviews">Customer Reviews (120)</h3>
+        <div class="card review">
+          <div class="review-header">
+            <strong>John Doe</strong>
+            <span class="rating">⭐⭐⭐⭐⭐</span>
+          </div>
+          <p class="review-date">Verified Purchase • 2 weeks ago</p>
+          <p class="review-text">Amazing phone! Great camera quality and fast performance. Highly recommended!</p>
+        </div>
+
+        <div class="card review">
+          <div class="review-header">
+            <strong>Jane Smith</strong>
+            <span class="rating">⭐⭐⭐⭐</span>
+          </div>
+          <p class="review-date">Verified Purchase • 1 month ago</p>
+          <p class="review-text">Good phone, but battery life could be better. Overall satisfied with the purchase.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function switchImage(img) {
+      document.getElementById('mainImage').src = img.src;
+    }
+
+    function increaseQty() {
+      const qty = document.getElementById('quantity');
+      qty.value = parseInt(qty.value) + 1;
+    }
+
+    function decreaseQty() {
+      const qty = document.getElementById('quantity');
+      if (parseInt(qty.value) > 1) {
+        qty.value = parseInt(qty.value) - 1;
+      }
+    }
+
+    function addToCart() {
+      const quantity = document.getElementById('quantity').value;
+      console.log('Added to cart:', quantity, 'items');
+      alert('Product added to cart!');
+      // API call here
+    }
+
+    function addToWishlist() {
+      alert('Product added to wishlist!');
+      // API call here
+    }
+
+    function contactSeller() {
+      alert('Contact seller message modal would open here');
+      // Open contact modal
+    }
+  </script>
+</body>
+
+</html>

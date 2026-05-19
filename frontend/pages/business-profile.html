@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Profile - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .profile-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
+    @media(max-width: 900px) { .profile-grid { grid-template-columns: 1fr; } }
+    .banner-container { position: relative; height: 180px; border-radius: 20px; overflow: hidden; margin-bottom: 60px; background: linear-gradient(135deg, #667eea, #764ba2); }
+    .banner-container img { width: 100%; height: 100%; object-fit: cover; }
+    .profile-avatar-wrap { position: absolute; bottom: -45px; left: 30px; width: 110px; height: 110px; border-radius: 24px; border: 6px solid #0f172a; overflow: hidden; background: #1e293b; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+    .profile-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; }
+    .edit-banner { position: absolute; top: 15px; right: 15px; padding: 8px 12px; font-size: 12px; }
+    .info-item { margin-bottom: 20px; }
+    .info-item label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .info-item p { font-size: 15px; color: white; margin: 0; font-weight: 500; }
+    .stat-mini { text-align: center; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 14px; border: 1px solid rgba(255,255,255,0.06); }
+    .stat-mini strong { display: block; font-size: 20px; color: white; }
+    .stat-mini span { font-size: 11px; color: var(--muted); }
+    .status-pill { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.08); }
+    .status-pill .icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+    .status-pill.verified .icon { background: rgba(34,197,94,0.2); color: #22c55e; }
+    .status-pill.pending .icon { background: rgba(234,179,8,0.2); color: #eab308; }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+    const _u = JSON.parse(localStorage.getItem("user") || '{}');
+    if (!_u || (_u.role !== "business" && _u.role !== "admin")) window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Business</span>
+      <a href="business-dashboard.html" class="sb-link">📊 Dashboard</a>
+      <a href="business-identity.html" class="sb-link">✓ Verification</a>
+      <a href="add-product.html" class="sb-link">➕ Add Product</a>
+      <a href="business-profile.html" class="sb-link active">🏪 Store Profile</a>
+      <a href="product-listing.html" class="sb-link" style="margin-top:auto;">🛍️ Marketplace</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:30px;">
+        <div>
+          <h1 style="margin: 0;">Store Profile 🏪</h1>
+          <p style="color: var(--muted); margin-top: 4px;">Manage your public business presence.</p>
+        </div>
+        <button class="btn btn-primary" onclick="editProfile()">✏️ Edit Profile</button>
+      </div>
+
+      <div class="profile-grid">
+        <!-- LEFT: Info -->
+        <div>
+          <div class="banner-container">
+            <img src="https://images.unsplash.com/photo-1557821552-17105176677c?w=1000&h=400&fit=crop" alt="Banner">
+            <button class="btn btn-secondary btn-xs edit-banner" onclick="editBanner()">📷 Change Banner</button>
+            <div class="profile-avatar-wrap">
+              <img src="https://images.unsplash.com/photo-1534670007418-fbb7f6cf32c3?w=200&h=200&fit=crop" alt="Avatar">
+            </div>
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <h2 id="dispBizName" style="margin: 0 0 4px;">TechStore Douala</h2>
+            <p id="dispHandle" style="color: var(--primary); font-size: 14px; margin: 0;">@techstore_cm ● <span style="color: #22c55e;">Verified ✓</span></p>
+            <p id="dispDesc" style="color: var(--muted); margin-top: 10px; font-size: 14px; line-height: 1.5;">Your #1 destination for electronics in Douala. We sell original iPhones, MacBooks, and high-quality accessories with 12 months warranty.</p>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px;">
+            <h3 style="margin: 0 0 16px;">Business Details</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+              <div class="info-item"><label>Business Name</label><p>TechStore Douala</p></div>
+              <div class="info-item"><label>Category</label><p>Electronics & Gadgets</p></div>
+              <div class="info-item"><label>Location</label><p>Douala, Littoral</p></div>
+              <div class="info-item"><label>Address</label><p>Akwa, 5th Street, Douala</p></div>
+              <div class="info-item"><label>Phone (MTN)</label><p>+237 670 123 456</p></div>
+              <div class="info-item"><label>Email</label><p>sales@techstore.cm</p></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin: 0 0 16px;">Shipping & Policies</h3>
+            <div class="info-item">
+              <label>Shipping Method</label>
+              <p>Home delivery in Douala/Yaoundé within 24h. Regional shipping via express courier.</p>
+            </div>
+            <div class="info-item">
+              <label>Shipping Fee</label>
+              <p>Fr 2,000 within the city. Free on orders over Fr 50,000.</p>
+            </div>
+            <div class="info-item">
+              <label>Return Policy</label>
+              <p>7-day money-back guarantee for manufacturer defects.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Status & Sidebar -->
+        <aside>
+          <div class="card" style="margin-bottom: 20px;">
+            <h3 style="margin: 0 0 16px;">Verification Status</h3>
+            
+            <div class="status-pill verified">
+              <div class="icon">✓</div>
+              <div style="flex: 1;"><strong style="font-size: 13px; display: block;">National ID</strong><span style="font-size: 11px; color: var(--muted);">Verified May 2026</span></div>
+            </div>
+
+            <div class="status-pill verified">
+              <div class="icon">✓</div>
+              <div style="flex: 1;"><strong style="font-size: 13px; display: block;">Phone Number</strong><span style="font-size: 11px; color: var(--muted);">Verified May 2026</span></div>
+            </div>
+
+            <div class="status-pill verified">
+              <div class="icon">✓</div>
+              <div style="flex: 1;"><strong style="font-size: 13px; display: block;">Email Address</strong><span style="font-size: 11px; color: var(--muted);">Verified May 2026</span></div>
+            </div>
+
+            <p style="font-size: 11px; color: var(--muted); margin-top: 14px; text-align: center;">
+              Your business is fully verified and trusted by SocialVerse moderators.
+            </p>
+          </div>
+
+          <div class="card" style="margin-bottom: 20px;">
+            <h3 style="margin: 0 0 16px;">Accepted Payments</h3>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,207,0,0.2);">
+                <span style="font-size: 20px;">📱</span>
+                <strong style="font-size: 13px; color: #ffcf00;">MTN Mobile Money</strong>
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 10px; border: 1px solid rgba(255,102,0,0.2);">
+                <span style="font-size: 20px;">🟠</span>
+                <strong style="font-size: 13px; color: #ff6600;">Orange Money</strong>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-xs full" style="margin-top: 12px;" onclick="editPayments()">Manage Methods</button>
+          </div>
+
+          <div class="card">
+            <h3 style="margin: 0 0 16px; color: #ef4444;">Danger Zone</h3>
+            <button class="btn btn-secondary full" style="margin-bottom: 10px; border-color: rgba(239,68,68,0.3); color: #ef4444;" onclick="closeStore()">Close Store</button>
+            <button class="btn btn-danger full" onclick="deleteProfile()">Delete Account</button>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    const bizUser = JSON.parse(localStorage.getItem('user') || '{}');
+    document.getElementById('dispBizName').textContent = bizUser.name || 'TechStore Douala';
+
+    function editProfile() { displayNotification("Edit profile modal opening...", "info"); }
+    function editBanner() { displayNotification("Banner upload opening...", "info"); }
+    function editPayments() { displayNotification("Payment settings opening...", "info"); }
+    function closeStore() { if(confirm('Are you sure you want to close your store?')) displayNotification("Store closed.", "success"); }
+    function deleteProfile() { if(confirm('Permanently delete your account? This cannot be undone.')) displayNotification("Account deleted.", "success"); }
+  </script>
+</body>
+</html>

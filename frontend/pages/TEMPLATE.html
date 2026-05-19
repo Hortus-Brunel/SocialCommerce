@@ -1,0 +1,142 @@
+<!-- =========================
+     PAGE TEMPLATE - SOCIAL COMMERCE APP
+     Copy this structure for all pages
+     ========================= -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Page Title - SocialVerse</title>
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- AUTH CHECK -->
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-container">
+        <a href="../index.html" class="logo">🚀 SocialVerse</a>
+        
+        <nav class="nav-links" id="navLinks">
+          <a href="product-listing.html">🛍️ Shop</a>
+          <a href="social-feed.html">📱 Feed</a>
+          <a href="orders.html">📦 Orders</a>
+          <a href="customer-dashboard.html">👤 Profile</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary btn-small" onclick="logout()" style="display: none;" id="logoutBtn">
+            Logout
+          </button>
+
+          <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <nav class="mobile-menu" id="mobileMenu">
+        <a href="product-listing.html">🛍️ Shop</a>
+        <a href="social-feed.html">📱 Feed</a>
+        <a href="orders.html">📦 Orders</a>
+        <a href="customer-dashboard.html">👤 Profile</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN LAYOUT -->
+  <div class="dashboard">
+    <!-- SIDEBAR -->
+    <aside class="sidebar card" id="sidebar">
+      <h2>📋 Menu</h2>
+      <ul>
+        <li><a href="customer-dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="product-listing.html">🛍️ Products</a></li>
+        <li><a href="orders.html">📦 My Orders</a></li>
+        <li><a href="social-feed.html">📱 Social Feed</a></li>
+        <li><a href="media-gallery.html">🖼️ Gallery</a></li>
+        <li><a href="ai-assistant.html">🤖 AI</a></li>
+      </ul>
+    </aside>
+
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+      <h1>Page Title</h1>
+      
+      <!-- YOUR CONTENT HERE -->
+      <div class="card">
+        <p>Page content goes here...</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- SCRIPTS -->
+  <!-- Core functionality -->
+  <script src="../js/script.js"></script>
+  
+  <!-- API and state management -->
+  <script src="../js/api.js"></script>
+  
+  <!-- Payment processing -->
+  <script src="../js/paymentHandler.js"></script>
+  
+  <!-- E-commerce features (wishlist, reviews, etc.) -->
+  <script src="../js/ecommerceFeatures.js"></script>
+
+  <!-- PAGE SPECIFIC SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Validate authentication
+      if (!await validateAuth()) return;
+
+      // Initialize page
+      initializePage();
+
+      // Load data
+      await loadPageData();
+    });
+
+    function initializePage() {
+      // Setup event listeners
+      // Initialize components
+      // Load page-specific configuration
+    }
+
+    async function loadPageData() {
+      try {
+        // Fetch data from API
+        // Update UI with data
+      } catch (error) {
+        console.error('Error loading data:', error);
+        showNotification('Failed to load data: ' + error.message, 'error');
+      }
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        apiClient.logout();
+      }
+    }
+  </script>
+
+</body>
+
+</html>

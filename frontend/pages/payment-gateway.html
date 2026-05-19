@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Gateway - SocialVerse</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <script>
+    if (!localStorage.getItem("token")) {
+      window.location.href = "login.html";
+    }
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card">
+      <h2>💳 Payment</h2>
+      <ul>
+        <li><a href="checkout.html">🛒 Checkout</a></li>
+        <li><a href="payment-gateway.html" class="active">💳 Payment</a></li>
+        <li><a href="payment-history.html">📜 History</a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <div class="payment-gateway-container">
+        <h1>🔐 Secure Payment</h1>
+
+        <div class="payment-order-summary card">
+          <h3>Order Summary</h3>
+          <div class="order-info">
+            <div class="info-row">
+              <span>Order ID:</span>
+              <strong id="orderId">ORD-000001</strong>
+            </div>
+            <div class="info-row">
+              <span>Amount:</span>
+              <strong id="amount">0 Fr</strong>
+            </div>
+            <div class="info-row">
+              <span>Items:</span>
+              <strong id="itemCount">0</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-methods-container">
+          <h2>Choose Payment Method</h2>
+
+          <!-- MTN Payment -->
+          <div class="payment-method-card card mtn-method" onclick="selectPaymentMethod('MTN')">
+            <div class="payment-method-header">
+              <img src="../images/mtn-logo.png" alt="MTN" class="payment-logo">
+              <h3>📱 MTN Mobile Money</h3>
+              <input type="radio" name="paymentMethod" value="MTN" class="payment-radio">
+            </div>
+            <div class="payment-method-content">
+              <p class="method-description">Fast and secure payment via MTN Mobile Money</p>
+              <ul class="method-features">
+                <li>✓ Instant payment confirmation</li>
+                <li>✓ Works with all MTN accounts</li>
+                <li>✓ No additional fees</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ORANGE Payment -->
+          <div class="payment-method-card card orange-method" onclick="selectPaymentMethod('ORANGE')">
+            <div class="payment-method-header">
+              <img src="../images/orange-logo.png" alt="ORANGE" class="payment-logo">
+              <h3>📱 Orange Money</h3>
+              <input type="radio" name="paymentMethod" value="ORANGE" class="payment-radio">
+            </div>
+            <div class="payment-method-content">
+              <p class="method-description">Secure payment via Orange Money</p>
+              <ul class="method-features">
+                <li>✓ Instant payment confirmation</li>
+                <li>✓ Works with all Orange accounts</li>
+                <li>✓ No additional fees</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-details card">
+          <h2>Payment Details</h2>
+          
+          <form id="paymentForm">
+            <div class="form-group">
+              <label for="selectedMethod">Selected Method:</label>
+              <div id="selectedMethod" class="selected-method">
+                <p class="muted">Please select a payment method</p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="phoneNumber">📞 Phone Number <span class="required">*</span></label>
+              <input type="tel" id="phoneNumber" placeholder="+237 6xx xxx xxx" required class="form-input">
+              <p class="help-text">Format: +237 6xx xxx xxx (Cameroon)</p>
+            </div>
+
+            <div class="form-group">
+              <label for="confirmNumber">Confirm Phone Number</label>
+              <input type="tel" id="confirmNumber" placeholder="Confirm phone number" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" id="agreeTerms" required>
+                I agree to the payment terms and conditions
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary large full" onclick="processPayment(event)">
+              🔐 Proceed to Payment
+            </button>
+          </form>
+        </div>
+
+        <div class="payment-security card">
+          <h3>🔒 Security Information</h3>
+          <div class="security-features">
+            <div class="security-item">
+              <span class="security-icon">🔐</span>
+              <p>Your payment information is encrypted</p>
+            </div>
+            <div class="security-item">
+              <span class="security-icon">✓</span>
+              <p>Verified by Cameroon's financial authorities</p>
+            </div>
+            <div class="security-item">
+              <span class="security-icon">🛡️</span>
+              <p>PCI DSS compliant payment processing</p>
+            </div>
+            <div class="security-item">
+              <span class="security-icon">🌐</span>
+              <p>SSL/TLS secure connection</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="payment-faq card">
+          <h3>❓ Frequently Asked Questions</h3>
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+              <span>How long does payment take?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Payment confirmation typically takes 2-5 minutes. You will receive an SMS confirmation from your payment provider.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+              <span>What if my payment fails?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>If your payment fails, you can try again or choose a different payment method. Check your account balance and try again.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+              <span>Is my information safe?</span>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Yes! We use industry-leading encryption and security protocols. Your information is never stored on our servers.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Processing Modal -->
+      <div id="paymentProcessingModal" class="modal" style="display: none;">
+        <div class="modal-content card">
+          <div class="processing-animation">
+            <div class="spinner"></div>
+            <h2>Processing Payment...</h2>
+            <p id="processingMessage">Contacting payment provider</p>
+            <div class="processing-steps">
+              <div class="step active" id="step1">
+                <span class="step-number">1</span>
+                <p>Validating details</p>
+              </div>
+              <div class="step" id="step2">
+                <span class="step-number">2</span>
+                <p>Sending to provider</p>
+              </div>
+              <div class="step" id="step3">
+                <span class="step-number">3</span>
+                <p>Awaiting confirmation</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Success Modal -->
+      <div id="paymentSuccessModal" class="modal" style="display: none;">
+        <div class="modal-content card success">
+          <div class="success-icon">✓</div>
+          <h2>Payment Successful!</h2>
+          <p>Your payment has been processed successfully</p>
+          <div class="success-details">
+            <div class="detail">
+              <span>Reference:</span>
+              <strong id="successReference">REF-00000000</strong>
+            </div>
+            <div class="detail">
+              <span>Amount:</span>
+              <strong id="successAmount">0 Fr</strong>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="goToOrders()">View Order</button>
+          <button class="btn btn-secondary" onclick="goHome()">Back Home</button>
+        </div>
+      </div>
+
+      <!-- Payment Error Modal -->
+      <div id="paymentErrorModal" class="modal" style="display: none;">
+        <div class="modal-content card error">
+          <div class="error-icon">✕</div>
+          <h2>Payment Failed</h2>
+          <p id="errorMessage">An error occurred during payment processing</p>
+          <button class="btn btn-danger" onclick="retryPayment()">Try Again</button>
+          <button class="btn btn-secondary" onclick="backToCheckout()">Back to Checkout</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script>
+    let selectedPaymentMethod = null;
+
+    function selectPaymentMethod(method) {
+      selectedPaymentMethod = method;
+      document.querySelectorAll('.payment-method-card').forEach(card => {
+        card.classList.remove('selected');
+      });
+      if (method === 'MTN') {
+        document.querySelector('.mtn-method').classList.add('selected');
+      } else {
+        document.querySelector('.orange-method').classList.add('selected');
+      }
+      document.querySelector(`input[value="${method}"]`).checked = true;
+      updateSelectedMethod();
+    }
+
+    function updateSelectedMethod() {
+      const selectedDiv = document.getElementById('selectedMethod');
+      if (selectedPaymentMethod) {
+        selectedDiv.innerHTML = `<strong style="color: var(--primary);">✓ ${selectedPaymentMethod} Money Selected</strong>`;
+      }
+    }
+
+    function processPayment(event) {
+      event.preventDefault();
+
+      if (!selectedPaymentMethod) {
+        alert("Please select a payment method");
+        return;
+      }
+
+      const phoneNumber = document.getElementById('phoneNumber').value;
+      const confirmNumber = document.getElementById('confirmNumber').value;
+      const agreeTerms = document.getElementById('agreeTerms').checked;
+
+      if (!phoneNumber) {
+        alert("Please enter your phone number");
+        return;
+      }
+
+      if (phoneNumber !== confirmNumber) {
+        alert("Phone numbers do not match");
+        return;
+      }
+
+      if (!agreeTerms) {
+        alert("Please agree to the terms and conditions");
+        return;
+      }
+
+      // Validate phone number format
+      const phoneRegex = /^(\+237|237)?[26]\d{8}$/;
+      if (!phoneRegex.test(phoneNumber.replace(/\s+/g, ''))) {
+        alert("Invalid phone number format. Use +237 6xx xxx xxx");
+        return;
+      }
+
+      // Show processing modal
+      showProcessingModal();
+
+      // Simulate payment processing
+      const paymentGateway = new PaymentGateway();
+      const orderId = localStorage.getItem("currentOrderId") || "ORD-000001";
+      const result = paymentGateway.processPayment(orderId, selectedPaymentMethod, phoneNumber);
+
+      if (result.success) {
+        // Simulate steps
+        setTimeout(() => {
+          document.getElementById('step1').classList.remove('active');
+          document.getElementById('step2').classList.add('active');
+        }, 500);
+
+        setTimeout(() => {
+          document.getElementById('step2').classList.remove('active');
+          document.getElementById('step3').classList.add('active');
+        }, 1500);
+
+        // Show success after 3 seconds
+        setTimeout(() => {
+          showSuccessModal(result.payment);
+        }, 3000);
+      } else {
+        showErrorModal(result.message);
+      }
+    }
+
+    function showProcessingModal() {
+      document.getElementById('paymentProcessingModal').style.display = 'flex';
+    }
+
+    function showSuccessModal(payment) {
+      document.getElementById('paymentProcessingModal').style.display = 'none';
+      document.getElementById('successReference').textContent = payment.id;
+      document.getElementById('successAmount').textContent = displayPrice(50000); // Example amount
+      document.getElementById('paymentSuccessModal').style.display = 'flex';
+    }
+
+    function showErrorModal(message) {
+      document.getElementById('paymentProcessingModal').style.display = 'none';
+      document.getElementById('errorMessage').textContent = message;
+      document.getElementById('paymentErrorModal').style.display = 'flex';
+    }
+
+    function toggleFAQ(element) {
+      element.parentElement.classList.toggle('active');
+      const toggle = element.querySelector('.faq-toggle');
+      toggle.textContent = toggle.textContent === '+' ? '−' : '+';
+    }
+
+    function retryPayment() {
+      document.getElementById('paymentErrorModal').style.display = 'none';
+    }
+
+    function backToCheckout() {
+      window.location.href = 'checkout.html';
+    }
+
+    function goToOrders() {
+      window.location.href = 'orders.html';
+    }
+
+    function goHome() {
+      window.location.href = 'customer-dashboard.html';
+    }
+
+    // Load order details
+    function loadOrderDetails() {
+      const orderId = localStorage.getItem("currentOrderId") || "ORD-000001";
+      const total = localStorage.getItem("orderTotal") || 50000;
+      const itemCount = localStorage.getItem("orderItemCount") || 2;
+
+      document.getElementById('orderId').textContent = orderId;
+      document.getElementById('amount').textContent = displayPrice(total);
+      document.getElementById('itemCount').textContent = itemCount;
+    }
+
+    window.addEventListener('load', loadOrderDetails);
+  </script>
+</body>
+
+</html>

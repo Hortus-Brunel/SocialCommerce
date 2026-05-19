@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>SocialVerse - AI-Powered Social Commerce Platform</title>
+
+  <link rel="stylesheet" href="css/style-enhanced.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container">
+      <div class="nav-container">
+        <a href="index.html" class="logo"><img src="images/logo.png" alt="SocialVerse" style="height:32px;width:32px;object-fit:cover;border-radius:8px;vertical-align:middle;margin-right:8px;" onerror="this.style.display='none'">SocialVerse</a>
+
+        <nav class="nav-links" id="navLinks">
+          <a href="#features">Features</a>
+          <a href="pages/product-listing.html">Marketplace</a>
+          <a href="#businesses">For Businesses</a>
+          <a href="pages/ai-assistant.html">AI Assistant</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" onclick="goToLogin()">
+            Login
+          </button>
+
+          <button class="btn btn-primary" onclick="goToRegister()">
+            Get Started
+          </button>
+
+          <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <nav class="mobile-menu" id="mobileMenu">
+        <a href="#features">Features</a>
+        <a href="pages/product-listing.html">Marketplace</a>
+        <a href="#businesses">For Businesses</a>
+        <a href="pages/ai-assistant.html">AI Assistant</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container hero-grid">
+
+      <!-- HERO TEXT -->
+      <div class="hero-text">
+        <span class="badge">✨ AI Powered Commerce</span>
+
+        <h1>
+          The Future of <span>Cameroonian E-Commerce</span> is Here
+        </h1>
+
+        <p>
+          Experience seamless shopping where customers connect, local businesses thrive, and AI learns your preferences. 
+          Join the revolution of personalized, social-first commerce made for Cameroon.
+        </p>
+
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-large" onclick="goToRegister()">
+            🛍️ Start Shopping
+          </button>
+
+          <button class="btn btn-secondary btn-large" onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})">
+            📚 Learn More
+          </button>
+        </div>
+
+        <div style="margin-top: 30px; display: flex; gap: 30px; font-size: 14px;">
+          <div>
+            <strong style="font-size: 20px; color: var(--primary);">50K+</strong>
+            <p style="color: var(--muted);">Active Users</p>
+          </div>
+          <div>
+            <strong style="font-size: 20px; color: var(--secondary);">100K+</strong>
+            <p style="color: var(--muted);">Products</p>
+          </div>
+          <div>
+            <strong style="font-size: 20px; color: var(--accent);">$1M+</strong>
+            <p style="color: var(--muted);">Trading Volume</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO VISUAL -->
+      <div class="hero-card card">
+        <div style="padding: 0;">
+          <div class="search-container">
+            <input type="text" id="homeSearch" class="search-input" placeholder="What are you looking for? (e.g. iPhone, Sneakers...)">
+            <button class="search-btn" onclick="performSearch()">🔍 Search</button>
+          </div>
+          <script>
+            function performSearch() {
+              const query = document.getElementById('homeSearch').value.trim();
+              if (query) {
+                window.location.href = `pages/product-listing.html?search=${encodeURIComponent(query)}`;
+              } else {
+                window.location.href = `pages/product-listing.html`;
+              }
+            }
+            // Allow Enter key to search
+            document.getElementById('homeSearch')?.addEventListener('keypress', (e) => {
+              if (e.key === 'Enter') performSearch();
+            });
+          </script>
+
+          <div class="mini-grid" style="margin-top: 20px;">
+
+            <div class="mini-product" onclick="window.location.href='pages/product-details.html'">
+              <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&h=200&fit=crop" alt="iPhone 15 Pro">
+              <h4>iPhone 15 Pro</h4>
+              <p>Fr 550,000</p>
+            </div>
+
+            <div class="mini-product" onclick="window.location.href='pages/product-details.html'">
+              <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop" alt="Premium Headphones">
+              <h4>Premium Headphones</h4>
+              <p>Fr 120,000</p>
+            </div>
+
+            <div class="mini-product" onclick="window.location.href='pages/product-details.html'">
+              <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=200&h=200&fit=crop" alt="Smart Watch">
+              <h4>Smart Watch</h4>
+              <p>Fr 85,000</p>
+            </div>
+
+            <div class="mini-product" onclick="window.location.href='pages/product-details.html'">
+              <img src="https://images.unsplash.com/photo-1620589125156-fd5028c5e05b?w=200&h=200&fit=crop" alt="Traditional Attire">
+              <h4>Traditional Attire</h4>
+              <p>Fr 45,000</p>
+            </div>
+
+          </div>
+
+          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; gap: 10px; font-size: 12px;">
+            <span>⭐ 4.8 (12.5K reviews)</span>
+            <span>🚚 Free shipping on orders >Fr 50,000</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Why Choose SocialVerse?</h2>
+        <p>The complete platform for modern social commerce</p>
+      </div>
+
+      <div class="feature-grid">
+
+        <div class="card feature">
+          <div class="feature-icon">🤖</div>
+          <h3>AI-Powered Recommendations</h3>
+          <p>Discover products tailored to your style with our intelligent recommendation engine.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">🏪</div>
+          <h3>Easy Business Setup</h3>
+          <p>Launch your store in minutes with our streamlined onboarding process.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">👥</div>
+          <h3>Social Shopping Experience</h3>
+          <p>Like, share, review and earn rewards on your favorite products.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">💳</div>
+          <h3>Secure Payment Methods</h3>
+          <p>Pay securely with MTN Mobile Money or Orange Money. Fast, safe, and in FCFA.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- BUSINESSES SECTION -->
+  <section class="features" style="background: rgba(0, 102, 204, 0.05); padding: 90px 20px;" id="businesses">
+    <div class="container">
+      <div class="section-title">
+        <h2>For Businesses</h2>
+        <p>Powerful tools to grow your brand</p>
+      </div>
+
+      <div class="feature-grid">
+
+        <div class="card feature">
+          <div class="feature-icon">📊</div>
+          <h3>Advanced Analytics</h3>
+          <p>Track sales, customer behavior, and market trends in real-time.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">📱</div>
+          <h3>Video Commerce</h3>
+          <p>Engage customers with live streams and short video product demos.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">⚡</div>
+          <h3>Flash Sales</h3>
+          <p>Run time-limited promotions to boost sales and engagement.</p>
+        </div>
+
+        <div class="card feature">
+          <div class="feature-icon">🎁</div>
+          <h3>Loyalty Program</h3>
+          <p>Build customer loyalty with rewards and exclusive offers.</p>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <button class="btn btn-primary btn-large" onclick="window.location.href='pages/register.html'">
+          Start Selling Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section style="padding: 80px 20px; background: linear-gradient(135deg, var(--primary), var(--secondary));">
+    <div class="container" style="text-align: center;">
+      <h2 style="font-size: 40px; margin-bottom: 15px; color: white;">Ready to Transform Your Shopping?</h2>
+      <p style="color: rgba(255, 255, 255, 0.9); margin-bottom: 30px; font-size: 16px;">Join thousands of customers and businesses already using SocialVerse</p>
+      <button class="btn" style="background: white; color: var(--primary); font-weight: 700; padding: 15px 30px; font-size: 16px;" onclick="goToRegister()">
+        Get Started Free
+      </button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background: rgba(0, 0, 0, 0.3); padding: 40px 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-bottom: 40px;">
+
+        <div>
+          <h4 style="margin-bottom: 15px; color: white;">🚀 SocialVerse</h4>
+          <p style="color: var(--muted); font-size: 14px;">The future of social commerce is here.</p>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 15px; color: white;">Platform</h4>
+          <ul style="list-style: none;">
+            <li><a href="pages/product-listing.html" style="color: var(--muted); text-decoration: none; font-size: 14px;">Browse Products</a></li>
+            <li><a href="pages/ai-assistant.html" style="color: var(--muted); text-decoration: none; font-size: 14px;">AI Assistant</a></li>
+            <li><a href="pages/social-feed.html" style="color: var(--muted); text-decoration: none; font-size: 14px;">Social Feed</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 15px; color: white;">For Business</h4>
+          <ul style="list-style: none;">
+            <li><a href="pages/register.html" style="color: var(--muted); text-decoration: none; font-size: 14px;">Sell with Us</a></li>
+            <li><a href="#" style="color: var(--muted); text-decoration: none; font-size: 14px;">Business Tools</a></li>
+            <li><a href="#" style="color: var(--muted); text-decoration: none; font-size: 14px;">Analytics</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 style="margin-bottom: 15px; color: white;">Support</h4>
+          <ul style="list-style: none;">
+            <li><a href="#" style="color: var(--muted); text-decoration: none; font-size: 14px;">Help Center</a></li>
+            <li><a href="#" style="color: var(--muted); text-decoration: none; font-size: 14px;">Contact Us</a></li>
+            <li><a href="#" style="color: var(--muted); text-decoration: none; font-size: 14px;">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; color: var(--muted); font-size: 13px;">
+        <p>&copy; 2026 SocialVerse. All rights reserved. | Designed for the future of commerce</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+
+</body>
+
+</html>

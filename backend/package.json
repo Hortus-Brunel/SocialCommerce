@@ -1,0 +1,42 @@
+{
+  "name": "socialverse-backend",
+  "version": "2.0.0",
+  "description": "AI-Powered Social Commerce Platform Backend",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "jest --coverage"
+  },
+  "keywords": [
+    "social commerce",
+    "ecommerce",
+    "ai",
+    "stripe"
+  ],
+  "author": "SocialVerse Team",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^7.0.0",
+    "express-validator": "^7.0.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.1.1",
+    "nodemailer": "^6.9.7",
+    "pg": "^8.20.0",
+    "socket.io": "^4.8.3",
+    "stripe": "^12.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.14"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

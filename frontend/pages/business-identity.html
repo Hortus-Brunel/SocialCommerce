@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Verification - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .verification-grid { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 800px; margin: 0 auto; }
+    .form-section { margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; font-weight: 500; }
+    .required { color: #ef4444; margin-left: 2px; }
+    .help-text { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .document-upload-group { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 16px; }
+    .upload-label { display: flex; align-items: center; gap: 14px; padding: 16px; border: 2px dashed rgba(255,255,255,0.1); border-radius: 12px; cursor: pointer; transition: all 0.2s; background: rgba(255,255,255,0.03); }
+    .upload-label:hover { border-color: var(--primary); background: rgba(102,126,234,0.05); }
+    .upload-icon { font-size: 24px; }
+    .upload-text strong { display: block; font-size: 14px; color: white; }
+    .upload-text p { font-size: 11px; color: var(--muted); margin: 0; }
+    input[type="file"] { display: none; }
+    .file-selected { font-size: 12px; color: #22c55e; margin-top: 6px; padding: 4px 8px; background: rgba(34,197,94,0.1); border-radius: 4px; display: inline-block; }
+    .agreement-box { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--muted); }
+    .agreement-box input { margin-top: 3px; }
+    .agreement-box strong { color: white; }
+    .success-state { text-align: center; padding: 40px 20px; }
+    .success-icon { font-size: 48px; margin-bottom: 20px; color: #22c55e; }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+    const _u = JSON.parse(localStorage.getItem("user") || '{}');
+    if (!_u || _u.role !== "business") window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <span style="font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Business</span>
+      <a href="business-dashboard.html" class="sb-link">📊 Dashboard</a>
+      <a href="business-identity.html" class="sb-link active">✓ Verification</a>
+      <a href="add-product.html" class="sb-link">➕ Add Product</a>
+      <a href="business-profile.html" class="sb-link">🏪 Store Profile</a>
+      <a href="product-listing.html" class="sb-link" style="margin-top:auto;">🛍️ Marketplace</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="margin-bottom: 30px;">
+        <h1 style="margin: 0;">Business Identity Verification 🛡️</h1>
+        <p style="color: var(--muted); margin-top: 4px;">Build trust with customers by verifying your business identity.</p>
+      </div>
+
+      <div id="verificationContainer">
+        <form id="businessVerificationForm" class="verification-grid">
+          <!-- Step 1: Business Information -->
+          <div class="card form-section">
+            <h3 style="margin: 0 0 16px;">📝 Step 1: Business Information</h3>
+            
+            <div class="form-group">
+              <label for="businessName">Business Name <span class="required">*</span></label>
+              <input type="text" id="businessName" placeholder="Your store name" required class="auth-input" style="width:100%;box-sizing:border-box;">
+              <p class="help-text">This will be your public store name</p>
+            </div>
+
+            <div class="form-group">
+              <label for="businessType">Business Category <span class="required">*</span></label>
+              <select id="businessType" required class="auth-input" style="width:100%;box-sizing:border-box;">
+                <option value="">Select category</option>
+                <option value="electronics">Electronics & Gadgets</option>
+                <option value="fashion">Fashion & Apparel</option>
+                <option value="food">Food & Groceries</option>
+                <option value="home">Home & Living</option>
+                <option value="beauty">Beauty & Personal Care</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="form-group">
+                <label for="businessCity">City <span class="required">*</span></label>
+                <input type="text" id="businessCity" placeholder="e.g. Douala" required class="auth-input" style="width:100%;box-sizing:border-box;">
+              </div>
+              <div class="form-group">
+                <label for="businessRegion">Region <span class="required">*</span></label>
+                <select id="businessRegion" required class="auth-input" style="width:100%;box-sizing:border-box;">
+                  <option value="">Select region</option>
+                  <option>Centre</option>
+                  <option>Littoral</option>
+                  <option>Ouest</option>
+                  <option>Nord-Ouest</option>
+                  <option>Sud-Ouest</option>
+                  <option>Sud</option>
+                  <option>Est</option>
+                  <option>Adamaoua</option>
+                  <option>Nord</option>
+                  <option>Extrême-Nord</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="businessAddress">Store Address <span class="required">*</span></label>
+              <textarea id="businessAddress" placeholder="Street, Quarter, Building..." required class="auth-input" rows="3" style="width:100%;box-sizing:border-box;resize:vertical;"></textarea>
+            </div>
+          </div>
+
+          <!-- Step 2: Contact Information -->
+          <div class="card form-section">
+            <h3 style="margin: 0 0 16px;">📞 Step 2: Contact Information</h3>
+            
+            <div class="form-group">
+              <label for="businessEmail">Business Email <span class="required">*</span></label>
+              <input type="email" id="businessEmail" placeholder="business@example.com" required class="auth-input" style="width:100%;box-sizing:border-box;">
+            </div>
+
+            <div class="form-group">
+              <label for="businessPhone">Business Phone (Cameroon) <span class="required">*</span></label>
+              <input type="tel" id="businessPhone" placeholder="+237 6xx xxx xxx" required class="auth-input" style="width:100%;box-sizing:border-box;">
+              <p class="help-text">Used for MTN/Orange Money transactions</p>
+            </div>
+          </div>
+
+          <!-- Step 3: Identity Documents -->
+          <div class="card form-section">
+            <h3 style="margin: 0 0 16px;">📄 Step 3: Identity Documents</h3>
+            <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">Please upload a clear copy of your national identity document.</p>
+            
+            <div class="document-upload-group">
+              <div class="document-upload">
+                <label for="identityDocument" class="upload-label">
+                  <div class="upload-icon">🆔</div>
+                  <div class="upload-text">
+                    <strong>National ID Card / Passport</strong>
+                    <p>PDF, JPG or PNG (Max 5MB)</p>
+                  </div>
+                  <input type="file" id="identityDocument" accept=".pdf,.jpg,.png,.jpeg" required onchange="updateFileInfo(this, 'idInfo')">
+                </label>
+                <div id="idInfo"></div>
+              </div>
+            </div>
+
+            <div style="background: rgba(234,179,8,0.05); border: 1px solid rgba(234,179,8,0.2); border-radius: 10px; padding: 12px; margin-top: 20px;">
+              <p style="font-size: 11px; color: #eab308; margin: 0;">
+                ✓ Ensure all details are visible and clear.<br>
+                ✓ Document must be valid (not expired).
+              </p>
+            </div>
+          </div>
+
+          <!-- Step 4: Agreement -->
+          <div class="card form-section">
+            <h3 style="margin: 0 0 16px;">✓ Step 4: Agreement</h3>
+            
+            <div class="agreement-box">
+              <input type="checkbox" id="agreeTerms" required>
+              <label for="agreeTerms">I agree to the SocialVerse <strong>Terms of Service</strong> and <strong>Seller Policies</strong></label>
+            </div>
+
+            <div class="agreement-box">
+              <input type="checkbox" id="agreeVerification" required>
+              <label for="agreeVerification">I certify that all provided information is accurate and belongs to me</label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary large full">🚀 Submit for Verification</button>
+          <p style="text-align: center; font-size: 12px; color: var(--muted); margin-top: 16px;">
+            Verification typically takes 24 hours. You will be notified via email.
+          </p>
+        </form>
+      </div>
+
+      <!-- Success State -->
+      <div id="verificationSuccess" style="display: none;" class="card success-state">
+        <div class="success-icon">✓</div>
+        <h2 style="margin: 0 0 10px;">Verification Submitted!</h2>
+        <p style="color: var(--muted); margin-bottom: 24px;">Your business information is being reviewed by our team.</p>
+        
+        <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto;">
+          <div style="margin-bottom: 12px;">
+            <strong style="font-size: 12px; color: var(--primary); text-transform: uppercase;">Next Steps</strong>
+            <p style="font-size: 13px; margin: 4px 0;">Our moderators will review your ID and business details. Once approved, you'll be able to list products in the marketplace.</p>
+          </div>
+          <div>
+            <strong style="font-size: 12px; color: var(--primary); text-transform: uppercase;">Status</strong>
+            <p style="font-size: 13px; margin: 4px 0; color: #eab308;">● Pending Review</p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="window.location.href='business-dashboard.html'">Go to Dashboard</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    function updateFileInfo(input, infoId) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const size = (file.size / (1024 * 1024)).toFixed(2);
+        document.getElementById(infoId).innerHTML = `<div class="file-selected">✓ ${file.name} (${size}MB)</div>`;
+      }
+    }
+
+    document.getElementById('businessVerificationForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Submitting...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      // Simulate submission
+      setTimeout(() => {
+        document.getElementById('verificationContainer').style.display = 'none';
+        document.getElementById('verificationSuccess').style.display = 'block';
+        displayNotification('Verification submitted successfully!', 'success');
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

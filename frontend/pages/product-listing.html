@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketplace - SocialVerse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style-enhanced.css">
+  <style>
+    .market-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 24px; }
+    .product-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column; }
+    .product-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .product-img-wrap { position: relative; width: 100%; aspect-ratio: 1; overflow: hidden; }
+    .product-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .product-card:hover .product-img-wrap img { transform: scale(1.1); }
+    .product-content { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+    .product-title { font-size: 15px; font-weight: 600; color: white; margin: 0 0 4px; }
+    .product-desc { font-size: 12px; color: var(--muted); margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4; }
+    .product-price { font-size: 18px; font-weight: 700; color: var(--primary); margin-top: auto; }
+    .product-badge { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); color: white; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
+    .sb-link { display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:var(--muted);text-decoration:none;transition:all .2s;margin-bottom:4px; border:none; background:transparent; font-family:inherit; font-size:14px; width:100%; text-align:left; cursor:pointer;}
+    .sb-link:hover, .sb-link.active { background:rgba(102,126,234,.15); color:white; }
+  </style>
+</head>
+<body>
+  <script>
+    if (!localStorage.getItem("token")) window.location.href = "login.html";
+  </script>
+
+  <div class="dashboard">
+    <aside class="sidebar card" style="display:flex;flex-direction:column;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.1)">
+        <img src="../images/logo.png" alt="Logo" style="width:34px;height:34px;border-radius:8px;object-fit:cover;" onerror="this.outerHTML='<span style=font-size:22px>🚀</span>'">
+        <span style="font-weight:700;color:white;font-size:15px;">SocialVerse</span>
+      </div>
+      <a href="customer-dashboard.html" id="dashLink" class="sb-link">🏠 Dashboard</a>
+      <a href="product-listing.html" class="sb-link active">🛍️ Marketplace</a>
+      <a href="orders.html" class="sb-link">📋 My Orders</a>
+      <a href="social-feed.html" class="sb-link">📱 Social Feed</a>
+      <a href="ai-assistant.html" class="sb-link">🤖 AI Assistant</a>
+      <button class="sb-link" onclick="localStorage.clear(); window.location.href='login.html';" style="color:#ef4444;margin-top:auto;">🚪 Logout</button>
+    </aside>
+
+    <main class="main">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:15px;">
+        <div>
+          <h1 style="margin: 0;">Marketplace 🛍️</h1>
+          <p style="color: var(--muted); margin-top: 4px;">Discover thousands of products from local businesses.</p>
+        </div>
+        <div style="display:flex;gap:10px;flex:1;max-width:500px;">
+          <input type="text" id="searchInput" placeholder="Search products..." class="auth-input" style="flex:1;background:rgba(255,255,255,0.03)" onkeyup="if(event.key==='Enter')handleSearch()">
+          <button class="btn btn-primary" onclick="handleSearch()">🔍 Search</button>
+        </div>
+      </div>
+
+      <div class="card" style="padding: 12px; margin-bottom: 24px; display: flex; gap: 10px; overflow-x: auto; white-space: nowrap;">
+        <button class="btn btn-secondary btn-xs" style="background:var(--primary);border-color:var(--primary)">All items</button>
+        <button class="btn btn-secondary btn-xs">Electronics</button>
+        <button class="btn btn-secondary btn-xs">Fashion</button>
+        <button class="btn btn-secondary btn-xs">Home & Kitchen</button>
+        <button class="btn btn-secondary btn-xs">Health & Beauty</button>
+        <button class="btn btn-secondary btn-xs">Groceries</button>
+      </div>
+
+      <div id="noResults" style="display:none; text-align:center; padding: 60px 0;">
+        <span style="font-size:48px;">🔍</span>
+        <h3>No products found</h3>
+        <p style="color:var(--muted)">Try adjusting your search or filters.</p>
+      </div>
+
+      <div class="market-grid" id="productGrid">
+        <!-- Product Card 1 -->
+        <div class="product-card" data-title="iphone 15 pro">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=400&fit=crop">
+            <span class="product-badge">Top Rated</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">iPhone 15 Pro</h3>
+            <p class="product-desc">Natural Titanium, 256GB. Original Apple warranty. Best price in Cameroon.</p>
+            <div class="product-price">Fr 550,000</div>
+            <button class="btn btn-primary full" style="margin-top:12px;padding:10px;" onclick="window.location.href='product-details.html?id=1'">View Details</button>
+          </div>
+        </div>
+
+        <!-- Product Card 2 -->
+        <div class="product-card" data-title="premium headphones">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Premium Headphones</h3>
+            <p class="product-desc">Active Noise Cancelling, Bluetooth 5.2. 40h battery life.</p>
+            <div class="product-price">Fr 120,000</div>
+            <button class="btn btn-primary full" style="margin-top:12px;padding:10px;" onclick="window.location.href='product-details.html?id=2'">View Details</button>
+          </div>
+        </div>
+
+        <!-- Product Card 3 -->
+        <div class="product-card" data-title="smart watch pro">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop">
+            <span class="product-badge">New</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Smart Watch Pro</h3>
+            <p class="product-desc">OLED Display, Heart rate monitoring, GPS, Water resistant.</p>
+            <div class="product-price">Fr 85,000</div>
+            <button class="btn btn-primary full" style="margin-top:12px;padding:10px;" onclick="window.location.href='product-details.html?id=3'">View Details</button>
+          </div>
+        </div>
+
+        <!-- Product Card 4 -->
+        <div class="product-card" data-title="red sneakers">
+          <div class="product-img-wrap">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=400&fit=crop">
+          </div>
+          <div class="product-content">
+            <h3 class="product-title">Classic Red Sneakers</h3>
+            <p class="product-desc">Comfortable sports shoes for daily use. All sizes available.</p>
+            <div class="product-price">Fr 35,000</div>
+            <button class="btn btn-primary full" style="margin-top:12px;padding:10px;" onclick="window.location.href='product-details.html?id=4'">View Details</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/script.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.role === 'business') {
+      document.getElementById('dashLink').href = 'business-dashboard.html';
+    }
+
+    // Handle search query from URL
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const search = params.get('search');
+      if (search) {
+        document.getElementById('searchInput').value = search;
+        handleSearch();
+      }
+    });
+
+    function handleSearch() {
+      const query = document.getElementById('searchInput').value.trim();
+      loadProducts(query);
+    }
+
+    async function loadProducts(search = '') {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;">Loading products...</div>';
+      
+      try {
+        const url = search ? `${API_BASE}/products?search=${encodeURIComponent(search)}` : `${API_BASE}/products`;
+        const res = await fetch(url, { headers: getAuthHeader() });
+        const products = await res.json();
+        
+        if (products.length === 0) {
+          grid.innerHTML = '';
+          document.getElementById('noResults').style.display = 'block';
+          return;
+        }
+        
+        document.getElementById('noResults').style.display = 'none';
+        grid.innerHTML = products.map(p => `
+          <div class="product-card">
+            <div class="product-img-wrap">
+              <img src="${p.thumbnail_url || 'https://via.placeholder.com/400'}" alt="${p.title}">
+              ${p.is_active ? '<span class="product-badge">Active</span>' : ''}
+            </div>
+            <div class="product-content">
+              <h3 class="product-title">${p.title}</h3>
+              <p class="product-desc">${p.description}</p>
+              <div class="product-price">${formatCurrency(p.price)}</div>
+              <button class="btn btn-primary full" style="margin-top:12px;padding:10px;" onclick="window.location.href='product-details.html?id=${p.id}'">View Details</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#ef4444;">Error loading products</div>';
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const params = new URLSearchParams(window.location.search);
+      const search = params.get('search');
+      if (search) document.getElementById('searchInput').value = search;
+      loadProducts(search || '');
+    });
+  </script>
+</body>
+</html>
